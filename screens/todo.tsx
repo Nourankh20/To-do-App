@@ -18,7 +18,6 @@ export default function Todo() {
   const [text, onChangeText] = React.useState("");
   const [update, onUpdate] = React.useState("");
   const [task, setTask] = React.useState([] as any);
-  const [crossed, setCross] = React.useState("");
 
   useEffect(() => {
     db.transaction((tx) => {
@@ -29,21 +28,6 @@ export default function Todo() {
 
     getTODO();
   }, [update]);
-
-  // const createTables = async () => {
-  //   return new Promise(async (resolve, reject) => {
-  //     await db.transaction(async (tx) => {
-  //       console.log("here :>> ");
-  //       await tx.executeSql(
-  //           `CREATE TABLE IF NOT EXIST To-dos (id INTEGER PRIMARY KEY AUTOINCREMENT,Name VARCHAR(20), Done INTEGER);`,
-  //           [],
-  //           () => {
-  //             console.log("created");
-  //           }
-  //       );
-  //     });
-  //   });
-  // };
 
   const addTask = async () => {
     if (!text) {
@@ -72,16 +56,10 @@ export default function Todo() {
   const deleteTask = async (id: number) => {
     db.transaction(async (tx) => {
       tx.executeSql("DELETE FROM todoL where id= ?", [id], (_, { rows }) => {
-        console.log(JSON.stringify(rows));
-        // onUpdate(" ");
         getTODO();
-        // setTask(" ");
       });
       tx.executeSql("select * from todoL", [], (_, { rows }) => {
-        console.log(JSON.stringify(rows));
-        // onUpdate(" ");
         getTODO();
-        // setTask(' ');
       });
     });
   };
@@ -91,8 +69,6 @@ export default function Todo() {
       txn.executeSql("select * from todoL", [], (_, { rows }) => {
         console.log("Tasks retrieved successfully");
         setTask(rows._array);
-        console.log(JSON.stringify(rows));
-        // onUpdate(" ");
       });
     });
   };
@@ -108,7 +84,6 @@ export default function Todo() {
         console.log("Update", JSON.stringify(rows));
         getTODO();
         onUpdate(" ");
-        // setTask("");
       });
     });
   };
